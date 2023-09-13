@@ -16,29 +16,9 @@ clock = pygame.time.Clock()
 
 next_field = np.zeros((H, W), dtype=int)
 current_field = deepcopy(next_field)
-
-# current_field = [[0 for i in range(W)] for j in range(H)]
-# current_field = [[1 if i == W // 2 or j == H // 2 else 0 for i in range(W)] for j in range(H)]
-# current_field = [[randint(0, 1) for i in range(W)] for j in range(H)]
-# current_field = [[1 if not i % 9 else 0 for i in range(W)] for j in range(H)] # 2,5,8,9,10,11,13,18,21,22,26,30,33,65
-# current_field = [[1 if not (2 * i + j) % 4 else 0 for i in range(W)] for j in range(H)] # (2,4),(4,4)
-# current_field = [[1 if not (i * j) % 22 else 0 for i in range(W)] for j in range(H)] # 5,6,9,22,33
-# current_field = np.array([[1 if not i % 7 else randint(0, 1) for i in range(W)] for j in range(H)])
-pattern = [
-    (0, 1), (1, 0), (1, 1), (2, 0), (2, 1), (3, 0), (3, 1),
-    (4, 0), (4, 1), (5, 0), (5, 1), (6, 0), (6, 1), (7, 0),
-    (7, 1), (8, 0), (8, 1), (9, 0), (9, 1), (10, 0), (10, 1),
-    (11, 0), (11, 1), (12, 0)
-]
-
-# Calculate the starting position to center the pattern
-start_x = (W - 13) // 2
-start_y = (H - 1) // 2
-
-# Place the pattern on the grid
-for y, x in pattern:
-    current_field[start_y + y, start_x + x] = 1
-
+for i in range(min(W, H)):
+    current_field[i, i] = 1
+    current_field[i, W - i - 1] = 1
 
 @njit(fastmath=True)
 def check_cell(current_field, next_field):
