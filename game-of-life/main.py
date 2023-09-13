@@ -5,7 +5,7 @@ import numpy as np
 from numba import njit
 
 RES = WIDTH, HEIGHT = 1500, 900
-TILE = 3
+TILE = 4
 W, H = WIDTH // TILE, HEIGHT // TILE
 FPS = 20
 
@@ -14,23 +14,8 @@ surface = pygame.display.set_mode(RES)
 clock = pygame.time.Clock()
 
 
-# Function to check if a number is prime
-def is_prime(n):
-    if n <= 1:
-        return False
-    if n <= 3:
-        return True
-    if n % 2 == 0 or n % 3 == 0:
-        return False
-    i = 5
-    while i * i <= n:
-        if n % i == 0 or n % (i + 2) == 0:
-            return False
-        i += 6
-    return True
-
-
-next_field = np.array([[0 for i in range(W)] for j in range(H)])
+next_field = np.zeros((H, W), dtype=int)
+current_field = deepcopy(next_field)
 
 # current_field = [[0 for i in range(W)] for j in range(H)]
 # current_field = [[1 if i == W // 2 or j == H // 2 else 0 for i in range(W)] for j in range(H)]
@@ -39,10 +24,6 @@ next_field = np.array([[0 for i in range(W)] for j in range(H)])
 # current_field = [[1 if not (2 * i + j) % 4 else 0 for i in range(W)] for j in range(H)] # (2,4),(4,4)
 # current_field = [[1 if not (i * j) % 22 else 0 for i in range(W)] for j in range(H)] # 5,6,9,22,33
 # current_field = np.array([[1 if not i % 7 else randint(0, 1) for i in range(W)] for j in range(H)])
-# Create a current_field with 1s in prime positions
-current_field = np.zeros((H, W), dtype=int)
-# Define the (13,1)c/31 Pseudo-B climber pattern
-# Define the (13,1)c/31 Pseudo-B climber pattern
 pattern = [
     (0, 1), (1, 0), (1, 1), (2, 0), (2, 1), (3, 0), (3, 1),
     (4, 0), (4, 1), (5, 0), (5, 1), (6, 0), (6, 1), (7, 0),
