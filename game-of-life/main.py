@@ -16,9 +16,27 @@ clock = pygame.time.Clock()
 
 next_field = np.zeros((H, W), dtype=int)
 current_field = deepcopy(next_field)
-for i in range(min(W, H)):
-    current_field[i, i] = 1
-    current_field[i, W - i - 1] = 1
+# Calculate the dimensions of the X pattern
+x_length = min(W, H) // 2  # Half the size of the X pattern
+
+# Calculate the center coordinates
+center_x = W // 2
+center_y = H // 2
+
+# Create the X pattern
+for i in range(-x_length, x_length + 1):
+    x1 = center_x + i
+    y1 = center_y + i
+    x2 = center_x - i
+    y2 = center_y + i
+    
+    # Check bounds to avoid going outside the grid
+    if 0 <= x1 < W and 0 <= y1 < H:
+        current_field[y1, x1] = 1
+    if 0 <= x2 < W and 0 <= y2 < H:
+        current_field[y2, x2] = 1
+
+
 
 @njit(fastmath=True)
 def check_cell(current_field, next_field):
